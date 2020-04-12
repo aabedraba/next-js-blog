@@ -1,20 +1,19 @@
 import Layout from '../../components/Layout'
-import fetch from 'isomorphic-unfetch'
+import Markdown from 'react-markdown'
 
-const Post = props => (
-    <Layout>
-        <h1>{props.data.name}</h1>
-        <p>{props.data.summary.replace(/<[/]?[pb]>/g, '')}</p>
-    </Layout>
-);
-
-Post.getInitialProps = async function (context) {
-    const { id } = context.query;
-
-    const res = await fetch(`https://api.tvmaze.com/shows/${id}`);
-    const data = await res.json();
-
-    return { data }
+export default function Post(props) {
+    return (
+        <Layout>
+            <Markdown 
+                source={props.post}
+                escapeHtml={false}
+                />
+        </Layout>
+    )
 }
 
-export default Post;
+Post.getInitialProps = async function(context){
+    const { id } = context.query;
+    const post = await import(`../../content/${id}.md`)
+    return {post: post.default};
+}
