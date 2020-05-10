@@ -1,6 +1,4 @@
 import Layout from '../components/Layout';
-import Markdown from 'react-markdown';
-import matter from 'gray-matter'
 
 const Index = props => (
     <Layout>
