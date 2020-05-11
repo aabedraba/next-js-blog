@@ -1,4 +1,5 @@
 import Layout from '../../components/Layout'
+import {getPostsData} from '../../lib/posts'
 import Markdown from 'react-markdown'
 
 export default function Post(props) {
@@ -12,8 +13,19 @@ export default function Post(props) {
     )
 }
 
-Post.getInitialProps = async function(context){
-    const { id } = context.query;
-    const post = await import(`../../content/${id}.md`)
-    return {post: post.default};
+export async function getStaticPaths(){
+    const data = getPostsData()
+
+    const paths = data.map(post => ({
+        params: {id: post.id},
+    }))
+
+    return { paths, fallback: false }
+}
+
+export async function getStaticProps({params}){
+    const posts = getPostsData()
+    const post = posts.find(post => post.id === params.id)
+    
+    return {props: {post: post.content}};
 }
