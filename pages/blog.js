@@ -1,6 +1,5 @@
 import Layout from '../components/Layout';
 import {getPostsData} from '../lib/posts'
-import fetch from 'node-fetch'
 import Link from 'next/link'
 
 const PostLink = post => (
